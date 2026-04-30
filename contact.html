@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>contact — kshiiteej</title>
+<link rel="stylesheet" href="components/shared.css">
+<style>
+
+/* ── CONTACT PAGE — specific styles ─────────────────────────── */
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 140px var(--pad-x) 80px;
+  position: relative; z-index: 10;
+  border-bottom: var(--border-acid);
+}
+.hero-headline {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(72px, 13vw, 190px);
+  line-height: 0.86; letter-spacing: 0.03em;
+  color: var(--warm);
+  animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both;
+}
+.hero-subline {
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.22em;
+  color: rgba(200,216,74,0.45);
+  margin-top: 24px;
+  animation: fadeIn 0.8s ease 0.45s both;
+}
+
+/* ── FORM SECTION ── */
+.form-section {
+  position: relative; z-index: 10;
+  padding: var(--pad-y) var(--pad-x) 100px;
+}
+.form-inner { max-width: 620px; }
+
+.field { margin-bottom: 22px; }
+.field-label {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.28em;
+  color: var(--acid); opacity: 0.55;
+  display: block; margin-bottom: 9px;
+}
+.field input,
+.field textarea {
+  width: 100%;
+  background: rgba(200,216,74,0.03);
+  border: 1px solid rgba(200,216,74,0.14);
+  color: var(--warm);
+  font-family: var(--body); font-size: 15px; font-weight: 300;
+  padding: 15px 18px; outline: none;
+  transition: border-color 0.2s;
+  resize: none;
+}
+.field input::placeholder,
+.field textarea::placeholder { color: rgba(242,237,228,0.2); }
+.field input:focus,
+.field textarea:focus { border-color: rgba(200,216,74,0.42); }
+.field textarea { min-height: 130px; line-height: 1.72; }
+
+.field-hint {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.14em;
+  color: rgba(200,216,74,0.22);
+  margin-top: 6px;
+}
+
+.submit-btn {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  margin-top: 10px; padding: 20px 48px; width: 100%;
+  background: var(--orange); color: var(--black); border: none;
+  font-family: var(--mono); font-size: 13px; letter-spacing: 0.22em;
+  transition: opacity 0.2s;
+}
+.submit-btn:hover { opacity: 0.88; }
+.submit-btn:disabled { opacity: 0.38; pointer-events: none; }
+
+.form-status {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
+  margin-top: 18px; min-height: 18px;
+}
+.form-status.err { color: var(--orange); }
+
+/* ── SUCCESS STATE ── */
+.success-state { display: none; padding-top: 4px; }
+.success-state.show { display: block; }
+
+.success-hl {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(44px, 7vw, 88px);
+  line-height: 0.9; letter-spacing: 0.04em;
+  color: var(--warm); margin-bottom: 20px;
+}
+.success-hl span { color: var(--orange); }
+
+.success-sub {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.2em;
+  color: rgba(200,216,74,0.4);
+  margin-bottom: 36px;
+}
+
+.success-wa {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 16px 36px;
+  border: 1px solid rgba(200,216,74,0.25);
+  color: var(--acid); text-decoration: none;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em;
+  transition: border-color 0.2s, color 0.2s;
+}
+.success-wa:hover { border-color: var(--acid); }
+
+/* ── SOCIALS ── */
+.socials {
+  margin-top: 52px; padding-top: 40px;
+  border-top: var(--border-acid);
+}
+.soc-row {
+  display: flex; align-items: center;
+  gap: 32px; flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.soc-link {
+  display: flex; align-items: center; gap: 9px;
+  text-decoration: none;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em;
+  color: rgba(200,216,74,0.35);
+  transition: color 0.2s;
+}
+.soc-link:hover { color: var(--acid); }
+.soc-link svg { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
+.soc-dot { color: rgba(200,216,74,0.15); }
+
+.details-row {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em;
+  color: rgba(242,237,228,0.18);
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+}
+.details-row a {
+  color: inherit; text-decoration: none;
+  transition: color 0.2s;
+}
+.details-row a:hover { color: rgba(242,237,228,0.45); }
+.details-sep { opacity: 0.4; }
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  .hero { padding: 110px var(--pad-x) 64px; }
+  .form-section { padding: 64px var(--pad-x) 100px; }
+  .soc-row { gap: 20px; }
+  .details-row { flex-direction: column; gap: 8px; align-items: flex-start; }
+}
+
+</style>
+</head>
+<body data-page="contact">
+
+<!-- component slots -->
+<div id="ambient-slot"></div>
+<div id="nav-slot"></div>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="section-tag">be part of it</div>
+  <h1 class="hero-headline">join the<br>journey</h1>
+  <p class="hero-subline">we're building something together</p>
+</section>
+
+<!-- ═══ FORM ═══ -->
+<section class="form-section">
+  <div class="form-inner reveal">
+
+    <form id="joinForm" novalidate>
+
+      <div class="field">
+        <label class="field-label" for="name">your name</label>
+        <input type="text" id="name" name="name"
+               placeholder="what do we call you?" required>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="email">email address</label>
+        <input type="email" id="email" name="email"
+               placeholder="your@email.com" required>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="message">
+          why join?
+          <span style="opacity:0.4;font-size:9px;letter-spacing:0.1em;">optional</span>
+        </label>
+        <textarea id="message" name="message"
+                  placeholder="collab idea, stockist interest, just vibing..."></textarea>
+        <div class="field-hint">// leave blank if you're still figuring it out</div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">
+        be part of the journey →
+      </button>
+      <div class="form-status" id="formStatus"></div>
+
+    </form>
+
+    <!-- success state -->
+    <div class="success-state" id="successState">
+      <div class="success-hl">welcome to<br>the <span>collective.</span></div>
+      <div class="success-sub">// you're in — we'll be in touch</div>
+      <a class="success-wa" id="waLink" href="#" target="_blank">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        say hi on whatsapp
+      </a>
+    </div>
+
+    <!-- socials + details -->
+    <div class="socials">
+      <div class="soc-row">
+
+        <a class="soc-link" href="https://www.instagram.com/_kshiiteej_/" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          instagram
+        </a>
+
+        <span class="soc-dot">·</span>
+
+        <a class="soc-link" href="https://www.facebook.com/share/1FGovgsgWz/" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          facebook
+        </a>
+
+        <span class="soc-dot">·</span>
+
+        <a class="soc-link" href="https://wa.me/919820013990" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          whatsapp
+        </a>
+
+      </div>
+
+      <div class="details-row">
+        <a href="mailto:support@kshiiteej.com">support@kshiiteej.com</a>
+        <span class="details-sep">·</span>
+        <span>vadodara, india</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- component slots -->
+<div id="ticker-slot"></div>
+<div id="footer-slot"></div>
+
+<script src="components/shared.js"></script>
+<script>
+/* ── BOOT ── */
+loadComponents(['bag-strip-slot']).then(() => {
+  initNavActive();
+  initReveal();
+  initFooterAnimation();
+});
+
+/* ── FORM SUBMIT ── */
+document.getElementById('joinForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const btn     = document.getElementById('submitBtn');
+  const status  = document.getElementById('formStatus');
+  const name    = document.getElementById('name').value.trim();
+  const email   = document.getElementById('email').value.trim();
+  const message = document.getElementById('message').value.trim();
+
+  if (!name) {
+    status.textContent = '// name required';
+    status.className = 'form-status err';
+    return;
+  }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    status.textContent = '// valid email required';
+    status.className = 'form-status err';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'sending...';
+  status.textContent = '';
+
+  const body = new FormData();
+  body.append('name', name);
+  body.append('email', email);
+  body.append('message', message);
+
+  try {
+    const res  = await fetch('mailer.php', { method: 'POST', body });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.error || 'error');
+
+    let waText = `hi kshiiteej! i want to be part of the journey. my name is ${name}.`;
+    if (message) waText += ` ${message}`;
+    const waUrl = `https://wa.me/919820013990?text=${encodeURIComponent(waText)}`;
+
+    document.getElementById('waLink').href = waUrl;
+    window.open(waUrl, '_blank');
+
+    this.style.display = 'none';
+    document.getElementById('successState').classList.add('show');
+
+  } catch(err) {
+    status.textContent = '// something went wrong — email us directly';
+    status.className = 'form-status err';
+    btn.disabled = false;
+    btn.textContent = 'be part of the journey →';
+  }
+});
+</script>
+
+</body>
+</html>

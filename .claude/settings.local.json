@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sed -i 's|https://instagram.com/kshiiteej|https://www.instagram.com/_kshiiteej_/|g' /c/Users/ajink/kshiiteej/index.html)",
+      "Bash(sed -i 's|https://facebook.com/kshiiteej|https://www.facebook.com/share/1FGovgsgWz/|g' /c/Users/ajink/kshiiteej/index.html)",
+      "Bash(sed -i 's|https://wa.me/919999999999|https://wa.me/919820013990|g' /c/Users/ajink/kshiiteej/index.html)",
+      "Bash(node:*)"
+    ]
+  }
+}

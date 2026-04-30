@@ -1,0 +1,133 @@
+<div class="bag-strip-section" id="bagStripSlot">
+  <div class="bag-strip-track" id="bagStripTrack">
+    <!-- populated by JS below -->
+  </div>
+</div>
+
+<script>
+(async function initBagStrip() {
+
+  await new Promise(r => setTimeout(r, 100));
+  const track = document.getElementById('bagStripTrack');
+  if (!track) return;
+
+  /* ── load CSV ── */
+  let rows = [];
+  try {
+    const res  = await fetch('dagad_inventory.csv');
+    const text = await res.text();
+    rows = parseCSV(text);
+  } catch (e) {
+    console.warn('bag-strip: could not load inventory CSV', e);
+    return;
+  }
+
+  /* ── filter rows that have a photo_url ── */
+  const bags = rows.filter(r => r.photo_url && r.photo_url.trim() !== '');
+
+  if (!bags.length) {
+    console.warn('bag-strip: no photo_url entries found in CSV');
+    return;
+  }
+
+  /* ── build image elements (duplicate for seamless loop) ── */
+  const all = [...bags, ...bags]; /* duplicate for infinite scroll */
+
+  all.forEach(bag => {
+    const img = document.createElement('img');
+    img.className   = 'bag-strip-img';
+    img.src         = cleanDropboxUrl(bag.photo_url);
+    img.alt         = bag.type ? bag.type + ' — ' + bag.bag_number : 'dagad bag';
+    img.loading     = 'lazy';
+
+    /* graceful fallback if image fails */
+    img.onerror = function () {
+      this.style.background = 'rgba(30,58,95,0.15)';
+      this.style.border     = '1px solid rgba(200,216,74,0.08)';
+      this.removeAttribute('src');
+      this.onerror = null;
+    };
+
+    track.appendChild(img);
+  });
+
+  /* ── set animation duration based on bag count ── */
+  /* ~0.7s per image feels natural, min 30s */
+  const duration = Math.max(30, bags.length * 0.7);
+  track.style.animationDuration = duration + 's';
+
+})();
+
+
+/* ── CSV PARSER ── */
+/*
+   Handles quoted fields, comma-separated.
+   First row = headers.
+   Returns array of objects keyed by header name.
+*/
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) return [];
+
+  const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, '').toLowerCase().replace(/\s+/g, '_'));
+
+  return lines.slice(1).map(line => {
+    const values = splitCSVLine(line);
+    const obj    = {};
+    headers.forEach((h, i) => {
+      obj[h] = (values[i] || '').trim().replace(/^"|"$/g, '');
+    });
+    return obj;
+  }).filter(r => Object.values(r).some(v => v !== ''));
+}
+
+function splitCSVLine(line) {
+  const result = [];
+  let cur      = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') {
+      inQuotes = !inQuotes;
+    } else if (ch === ',' && !inQuotes) {
+      result.push(cur);
+      cur = '';
+    } else {
+      cur += ch;
+    }
+  }
+  result.push(cur);
+  return result;
+}
+
+
+/* ── DROPBOX URL CLEANER ── */
+/*
+   Converts Dropbox share links to direct image URLs.
+   Handles both old and new Dropbox URL formats.
+
+   Input:  https://www.dropbox.com/s/xxx/photo.jpg?dl=0
+           https://www.dropbox.com/scl/fi/xxx/photo.jpg?...
+   Output: https://dl.dropboxusercontent.com/s/xxx/photo.jpg
+*/
+function cleanDropboxUrl(url) {
+  if (!url) return '';
+  url = url.trim();
+  /* already direct */
+  if (url.includes('dl.dropboxusercontent.com')) return url;
+  /* has raw=1 — just return as-is, browser can handle it */
+  if (url.includes('raw=1')) return url;
+  /* try converting */
+  try {
+    const u = new URL(url);
+    if (u.hostname.includes('dropbox.com')) {
+      u.hostname = 'dl.dropboxusercontent.com';
+      u.searchParams.delete('dl');
+      u.searchParams.set('raw', '1');
+      return u.toString();
+    }
+  } catch(e) {}
+  return url;
+}
+</script>

@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>dagad — kshiiteej</title>
+<link rel="stylesheet" href="components/shared.css">
+<style>
+
+/* ── DAGAD PAGE — specific styles ──────────────────────────── */
+
+/* ── HERO ── */
+.hero {
+  position: relative; z-index: 10;
+  width: 100%; aspect-ratio: 16/9;
+  min-height: 480px;
+  overflow: hidden;
+}
+
+.hero-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+}
+
+/* dark gradients over hero image */
+.hero-overlay {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(to right,  rgba(8,8,7,0.15) 0%, transparent 50%, rgba(8,8,7,0.75) 100%),
+    linear-gradient(to bottom, transparent 50%, rgba(8,8,7,0.85) 100%);
+}
+
+/* dagad logo — bottom left */
+.hero-logo {
+  position: absolute; bottom: 40px; left: var(--pad-x);
+  width: 260px; height: auto;
+  mix-blend-mode: luminosity;
+  filter: invert(1) brightness(0.88);
+  z-index: 2;
+}
+
+/* tagline — bottom right */
+.hero-tagline {
+  position: absolute; bottom: 40px; right: var(--pad-x);
+  text-align: right; z-index: 2;
+}
+.hero-tagline-line {
+  display: block;
+  font-family: var(--mono);
+  font-size: 13px; letter-spacing: 0.22em;
+  color: rgba(242,237,228,0.45);
+  line-height: 2;
+}
+.hero-tagline-line .o { color: var(--orange); }
+
+/* scroll cue — bottom centre */
+.scroll-cue {
+  position: absolute; bottom: 28px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  z-index: 2;
+}
+.scroll-cue-line {
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, var(--orange), transparent);
+  animation: scrollCue 2s ease-in-out infinite;
+}
+@keyframes scrollCue {
+  0%,100% { opacity: 0.4; transform: scaleY(1); transform-origin: top; }
+  50%     { opacity: 1;   transform: scaleY(1.2); }
+}
+.scroll-cue-label {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.3em;
+  color: rgba(242,237,228,0.3);
+}
+
+/* ── WABI MARQUEE ── */
+.marquee-section {
+  position: relative; z-index: 10;
+}
+
+/* ── INTRO SECTION ── */
+.intro-section {
+  position: relative; z-index: 10;
+  padding: var(--pad-y) var(--pad-x);
+  padding-top: calc(var(--pad-y) + 24px);
+  padding-bottom: 56px;
+  border-top: var(--border-acid);
+}
+.intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px; align-items: start;
+}
+.intro-headline {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(52px, 8vw, 100px);
+  line-height: 0.9; letter-spacing: 0.03em;
+  color: var(--warm);
+  animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both;
+  margin-top: 24px;
+}
+.intro-headline .hl { color: var(--orange); }
+
+.intro-body {
+  font-family: var(--mono);
+  font-size: 14px; letter-spacing: 0.05em;
+  line-height: 1.95;
+  color: rgba(242,237,228,0.6);
+  padding-top: 8px;
+}
+.intro-body p + p { margin-top: 24px; }
+.intro-body strong {
+  color: var(--warm);
+  font-weight: 500;
+  font-family: var(--mono); 
+}
+
+/* ── MAKING OF ── */
+.making-section {
+  position: relative; z-index: 10;
+  padding: var(--pad-y) var(--pad-x);
+  padding-bottom: 56px;
+  border-top: var(--border-acid);
+  background: rgba(8,8,7,0.6);
+}
+.making-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+  margin-top: 48px;
+  border: var(--border-acid);
+}
+.making-step {
+  padding: 36px 28px;
+  border-right: var(--border-acid);
+  transition: background 0.25s;
+}
+.making-step:last-child { border-right: none; }
+.making-step:hover { background: rgba(232,80,10,0.04); }
+
+.making-num {
+  font-family: var(--display);
+  font-weight: 700; font-size: 44px;
+  line-height: 1; letter-spacing: 0.02em;
+  color: var(--orange); opacity: 0.18;
+  margin-bottom: 12px;
+  user-select: none;
+}
+.making-bar {
+  width: 20px; height: 2px;
+  background: var(--orange);
+  margin-bottom: 16px;
+}
+.making-title {
+  font-family: var(--display);
+  font-weight: 700; font-size: 20px;
+  letter-spacing: 0.06em;
+  color: var(--warm);
+  margin-bottom: 14px;
+}
+.making-body {
+  font-family: var(--mono);
+  font-size: 13px; letter-spacing: 0.02em;
+  line-height: 1.85;
+  color: rgba(242,237,228,0.45);
+}
+
+/* ── FEATURES ── */
+.features-section {
+  position: relative; z-index: 10;
+  padding: var(--pad-y) var(--pad-x);
+  padding-bottom: 56px;
+  border-top: var(--border-acid);
+}
+.features-list { margin-top: 48px; }
+
+.feature-row {
+  display: grid;
+  grid-template-columns: 180px 1fr 140px;
+  gap: 32px; align-items: center;
+  padding: 24px 0;
+  border-bottom: var(--border-acid);
+  transition: background 0.2s;
+}
+.features-list .feature-row:first-child {
+  border-top: var(--border-acid);
+}
+.feature-row:hover { background: rgba(200,216,74,0.02); }
+
+.feature-name {
+  font-family: var(--display);
+  font-weight: 700; font-size: 28px;
+  letter-spacing: 0.04em;
+  color: var(--warm);
+}
+.feature-desc {
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.07em;
+  line-height: 1.75;
+  color: rgba(242,237,228,0.42);
+}
+.feature-tag {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.14em;
+  color: var(--acid);
+  border: 1px solid rgba(200,216,74,0.28);
+  padding: 5px 12px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ── PRICING ── */
+.pricing-section {
+  position: relative; z-index: 10;
+  padding: var(--pad-y) var(--pad-x);
+  border-top: 1px solid rgba(232,80,10,0.12);
+  background: rgba(232,80,10,0.035);
+}
+.pricing-intro {
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.08em;
+  line-height: 1.85;
+  color: rgba(242,237,228,0.4);
+  max-width: 540px;
+  margin-bottom: 52px;
+}
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+.pricing-card {
+  padding: 48px 36px;
+  border: var(--border-acid);
+  margin-right: -1px;
+  display: flex; flex-direction: column; gap: 16px;
+  transition: border-color 0.25s;
+}
+.pricing-card:hover { border-color: rgba(200,216,74,0.3); }
+.pricing-card.featured {
+  background: rgba(232,80,10,0.055);
+  border-color: rgba(232,80,10,0.25);
+  position: relative;
+}
+.pricing-card.featured:hover { border-color: rgba(232,80,10,0.45); }
+
+.pricing-badge {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.2em;
+  color: var(--acid);
+  display: inline-block;
+}
+.pricing-price {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(44px, 6vw, 72px);
+  line-height: 0.9; letter-spacing: 0.02em;
+  color: var(--warm);
+  display: flex; align-items: baseline; gap: 4px;
+}
+.pricing-price .currency {
+  font-size: 0.45em;
+  color: rgba(242,237,228,0.4);
+  vertical-align: top; margin-top: 12px;
+  margin-right: 2px;
+}
+.pricing-heading {
+  font-family: var(--display);
+  font-weight: 700; font-size: 28px;
+  letter-spacing: 0.04em;
+  color: var(--warm);
+}
+.pricing-body {
+  font-family: var(--mono);
+  font-size: 13px; letter-spacing: 0.06em;
+  line-height: 1.85;
+  color: rgba(242,237,228,0.42);
+  flex: 1;
+}
+.pricing-footer {
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.1em;
+  line-height: 1.7;
+  color: rgba(200,216,74,0.35);
+  padding-top: 16px;
+  border-top: var(--border-acid);
+}
+.pricing-bottom {
+  text-align: center;
+  margin-top: 36px;
+  font-family: var(--mono);
+  font-size: 13px; letter-spacing: 0.14em;
+  color: rgba(242,237,228,0.2);
+}
+.pricing-bottom span { color: var(--orange); }
+
+/* ── SHOP ── */
+.shop-section {
+  position: relative; z-index: 10;
+  padding: var(--pad-y) var(--pad-x);
+  border-top: var(--border-acid);
+}
+.shop-intro {
+  font-family: var(--mono);
+  font-size: 13px; letter-spacing: 0.14em;
+  color: rgba(242,237,228,0.3);
+  margin-bottom: 48px;
+}
+
+/* type grid — 3×2 */
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  background: rgba(242,237,228,0.04);
+  border: var(--border-acid);
+}
+.shop-tile {
+  border-right: var(--border-acid);
+  border-bottom: var(--border-acid);
+  cursor: crosshair !important;
+  transition: border-color 0.25s;
+}
+.shop-tile:nth-child(3n) { border-right: none; }
+.shop-tile:nth-child(4),
+.shop-tile:nth-child(5),
+.shop-tile:nth-child(6) { border-bottom: none; }
+.shop-tile {
+  transition: border-color 0.25s, background 0.25s;
+}
+
+.shop-tile:hover {
+  border-color: rgba(200,216,74,0.35);
+  background: rgba(200,216,74,0.02);
+}
+.shop-tile.open  { border-top: 2px solid var(--orange); }
+
+.shop-tile-photo {
+  aspect-ratio: 4/3;
+  background: var(--black);
+  border-bottom: var(--border-acid);
+  overflow: hidden;
+  position: relative;
+}
+.shop-tile-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+
+  transform: scale(1);
+  filter: contrast(1) saturate(0.95) brightness(0.95);
+
+  transition: 
+    transform 0.6s cubic-bezier(0.16,1,0.3,1),
+    filter 0.4s ease,
+    opacity 0.3s;
+}
+.shop-tile-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  background-size: 180px;
+
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+
+  transition: opacity 0.4s ease;
+}
+.shop-tile:hover .shop-tile-photo img {
+  transform: scale(1.1);
+  filter: contrast(1.2) saturate(1.08) brightness(1.05);
+}
+
+.shop-tile:hover .shop-tile-photo::before {
+  opacity: 1;
+}
+
+.shop-tile:hover .shop-tile-photo::after {
+  opacity: 0.18;
+}
+
+.shop-tile:hover .shop-tile-photo::after {
+  opacity: 0.12;
+}
+.shop-tile.open .shop-tile-photo img { opacity: 0.5; }
+.shop-tile-photo-placeholder {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em;
+  color: rgba(200,216,74,0.15);
+}
+/* light overlay */
+.shop-tile-photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    120deg,
+    rgba(255,255,255,0.08) 0%,
+    transparent 40%,
+    transparent 60%,
+    rgba(232,80,10,0.12) 100%
+  );
+
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+/* grain overlay */
+.shop-tile-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  background-size: 180px;
+
+  opacity: 0.08;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+
+  transition: opacity 0.4s ease;
+}
+
+.shop-tile-body { padding: 28px 24px; }
+
+.shop-tile-name {
+  font-family: var(--display);
+  font-weight: 700; font-size: 30px;
+  letter-spacing: 0.04em;
+  color: var(--warm); margin-bottom: 8px;
+}
+.shop-tile-variant {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.18em;
+  color: rgba(107,138,170,0.7);
+  margin-bottom: 18px;
+}
+.shop-tile-uses {
+  list-style: none;
+  margin-bottom: 20px;
+}
+.shop-tile-uses li {
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.02em;
+  color: rgba(242,237,228,0.35);
+  line-height: 2;
+}
+.shop-tile-uses li::before {
+  content: '—';
+  color: var(--orange);
+  margin-right: 8px;
+}
+.shop-tile-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 16px;
+  border-top: var(--border-acid);
+}
+.shop-tile-count {
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.16em;
+  color: rgba(200,216,74,0.3);
+}
+.shop-tile-arrow {
+  font-family: var(--mono); font-size: 16px;
+  color: rgba(200,216,74,0.4);
+  transition: transform 0.25s, color 0.25s;
+}
+.shop-tile.open .shop-tile-arrow {
+  transform: rotate(180deg);
+  color: var(--orange);
+}
+
+/* expand panel */
+.shop-expand {
+  display: none;
+  border-top: 2px solid var(--orange);
+  border-bottom: var(--border-acid);
+  background: rgba(8,8,7,0.8);
+  padding: 40px var(--pad-x);
+}
+.shop-expand.open { display: block; }
+
+.shop-expand-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 32px;
+}
+.shop-expand-title {
+  font-family: var(--display);
+  font-weight: 700; font-size: 22px;
+  letter-spacing: 0.06em; color: var(--warm);
+}
+.shop-expand-close {
+  font-family: var(--mono); font-size: 13px; letter-spacing: 0.2em;
+  color: rgba(200,216,74,0.4);
+  background: none; border: none;
+  transition: color 0.2s;
+}
+.shop-expand-close:hover { color: var(--acid); }
+
+/* bag cards — 5 per row */
+.bag-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+}
+.bag-card {
+  border: var(--border-acid);
+  margin-right: -1px; margin-bottom: -1px;
+  padding: 20px 16px;
+  display: flex; flex-direction: column; gap: 12px;
+  transition: border-color 0.2s;
+}
+.bag-card:hover { border-color: rgba(200,216,74,0.3); }
+.bag-card.carried { opacity: 0.45; }
+
+.bag-card-photo {
+  aspect-ratio: 1/1;
+  background: rgba(30,58,95,0.15);
+  border: 1px dashed rgba(200,216,74,0.12);
+  overflow: hidden; margin-bottom: 4px;
+}
+.bag-card-photo img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.bag-card.carried .bag-card-photo {
+  filter: grayscale(100%);
+}
+
+.bag-card-id {
+  font-family: var(--mono);
+  font-size: 13px; letter-spacing: 0.14em;
+  color: var(--orange);
+}
+.bag-card-char {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.08em;
+  line-height: 1.6;
+  color: rgba(242,237,228,0.3);
+  flex: 1;
+}
+
+/* tier selector */
+.tier-selector {
+  display: flex; gap: 0;
+}
+.tier-btn {
+  flex: 1;
+  font-family: var(--mono); font-size: 8px; letter-spacing: 0.12em;
+  padding: 6px 4px; text-align: center;
+  border: 1px solid rgba(200,216,74,0.15);
+  margin-right: -1px;
+  background: transparent; color: rgba(200,216,74,0.3);
+  transition: all 0.15s;
+}
+.tier-btn:hover { color: var(--acid); border-color: rgba(200,216,74,0.4); }
+.tier-btn.active {
+  border-color: var(--orange);
+  color: var(--orange);
+  background: rgba(232,80,10,0.08);
+}
+
+.bag-card-cta {
+  display: block; width: 100%;
+  padding: 12px 8px; text-align: center;
+  background: var(--orange); color: var(--black);
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em;
+  text-decoration: none; border: none;
+  transition: opacity 0.2s;
+}
+.bag-card-cta:hover { opacity: 0.85; }
+
+.bag-card-carried-label {
+  display: none;
+  text-align: center;
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.2em;
+  color: rgba(242,237,228,0.2);
+  padding: 12px 0;
+}
+.bag-card.carried .bag-card-cta        { display: none; }
+.bag-card.carried .bag-card-carried-label { display: block; }
+
+/* ── CARE ── */
+.care-section {
+  position: relative; z-index: 10;
+  padding: var(--pad-y) var(--pad-x);
+  border-top: var(--border-acid);
+}
+.care-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: start;
+  margin-top: 48px;
+}
+.care-headline {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(44px, 6vw, 72px);
+  line-height: 0.92; letter-spacing: 0.03em;
+  color: var(--warm);
+  margin-bottom: 24px;
+}
+.care-headline .hl { color: var(--orange); }
+
+.care-intro {
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.07em;
+  line-height: 1.85;
+  color: rgba(242,237,228,0.42);
+}
+.care-rules { }
+.care-rule {
+  padding: 28px 0;
+  border-bottom: var(--border-acid);
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 20px; align-items: start;
+}
+.care-rules .care-rule:first-child { border-top: var(--border-acid); }
+
+.care-rule-num {
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.24em;
+  color: var(--acid); opacity: 0.5;
+  padding-top: 3px;
+}
+.care-rule-content { }
+.care-rule-title {
+  font-family: var(--display);
+  font-weight: 700; font-size: 20px;
+  letter-spacing: 0.05em; color: var(--warm);
+  margin-bottom: 8px;
+}
+.care-rule-body {
+  font-family: var(--mono);
+  font-size: 13px; letter-spacing: 0.07em;
+  line-height: 1.8;
+  color: rgba(242,237,228,0.38);
+}
+
+/* ── SHOP CTA ── */
+.shop-cta-section {
+  position: relative; z-index: 10;
+  padding: var(--pad-y) var(--pad-x);
+  border-top: var(--border-acid);
+  text-align: center;
+}
+.shop-cta-headline {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(64px, 11vw, 140px);
+  line-height: 0.88; letter-spacing: 0.03em;
+  color: var(--warm);
+  margin-bottom: 36px;
+}
+.shop-cta-headline .hl { color: var(--orange); }
+
+.shop-cta-sub {
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.14em;
+  color: rgba(242,237,228,0.3);
+  margin-bottom: 36px;
+}
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  .hero { aspect-ratio: auto; min-height: 60vh; }
+  .hero-logo { width: 120px; bottom: 56px; left: 22px; }
+  .scroll-cue { bottom: 20px; }
+  .hero-tagline { display: none; }
+
+  .intro-grid  { grid-template-columns: 1fr; gap: 40px; }
+  .making-grid { grid-template-columns: 1fr; }
+  .making-step { border-right: none; border-bottom: var(--border-acid); }
+  .making-step:last-child { border-bottom: none; }
+
+  .features-section { padding: var(--pad-y) var(--pad-x); }
+  .feature-row { grid-template-columns: 1fr; gap: 8px; }
+  .feature-tag { display: none; }
+
+  .pricing-grid { grid-template-columns: 1fr; }
+  .pricing-card { margin-right: 0; margin-bottom: -1px; }
+
+  .shop-grid { grid-template-columns: 1fr; }
+  .shop-tile { border-right: none; }
+  .shop-tile:nth-child(n) { border-bottom: var(--border-acid); }
+
+  .bag-cards-grid { grid-template-columns: repeat(2, 1fr); }
+
+  .care-grid { grid-template-columns: 1fr; gap: 40px; }
+
+  .shop-cta-section { padding-bottom: 100px; }
+}
+
+@media (hover: none) {
+  .shop-tile:active .shop-tile-photo img {
+    transform: scale(1.05);
+    filter: contrast(1.1) brightness(1.03);
+  }
+}
+</style>
+</head>
+<body data-page="dagad">
+
+<!-- component slots -->
+<div id="ambient-slot"></div>
+<div id="nav-slot"></div>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <img class="hero-img" src="hero-export.jpg" alt="dagad bags">
+  <div class="hero-overlay"></div>
+
+ <img class="hero-logo" src="dagad-blck.png" alt="dagad">
+
+  <div class="hero-tagline">
+    <span class="hero-tagline-line">upcycled denim bags</span>
+    <span class="hero-tagline-line">from <span class="o">vadodara</span>, india</span>
+    <span class="hero-tagline-line">no two alike. ever.</span>
+  </div>
+
+  <div class="scroll-cue">
+    <div class="scroll-cue-line"></div>
+    <span class="scroll-cue-label">scroll</span>
+  </div>
+</section>
+
+<!-- ═══ WABI MARQUEE ═══ -->
+<div class="marquee-section">
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span class="marquee-item">imperfection is the design<span class="msep">·</span></span>
+      <span class="marquee-item">repair don't discard<span class="msep">·</span></span>
+      <span class="marquee-item">every scar has a story<span class="msep">·</span></span>
+      <span class="marquee-item">no two alike<span class="msep">·</span></span>
+      <span class="marquee-item">built to last<span class="msep">·</span></span>
+      <span class="marquee-item">from discarded denim<span class="msep">·</span></span>
+      <span class="marquee-item">made in vadodara<span class="msep">·</span></span>
+      <span class="marquee-item">imperfection is the design<span class="msep">·</span></span>
+      <span class="marquee-item">repair don't discard<span class="msep">·</span></span>
+      <span class="marquee-item">every scar has a story<span class="msep">·</span></span>
+      <span class="marquee-item">no two alike<span class="msep">·</span></span>
+      <span class="marquee-item">built to last<span class="msep">·</span></span>
+      <span class="marquee-item">from discarded denim<span class="msep">·</span></span>
+      <span class="marquee-item">made in vadodara<span class="msep">·</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ INTRO ═══ -->
+<section class="intro-section">
+  <div class="intro-grid">
+    <div>
+      <div class="section-tag">the weapon</div>
+      <h1 class="intro-headline">
+        your everyday<br>
+        <span class="hl">weapon</span><br>
+        against plastic.
+      </h1>
+    </div>
+    <div class="intro-body reveal">
+      <p>in a world drowning in single-use plastic, dagad shows up differently. sourced from discarded denim jeans, stitched by skilled women tailors in vadodara — every bag is engineered to replace a hundred plastic bags you'll never pick up again.</p>
+      <p>the name means <strong>rock</strong> in marathi. heavy. purposeful. unignorable. that's what this is — a stone thrown at a plastic-addicted world.</p>
+      <p>each dagad carries the character of its past life — the denim it came from, the hands that shaped it, the philosophy that named it. <strong>yours is the only one on the planet.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MAKING OF ═══ -->
+<section class="making-section">
+  <div class="section-tag">how dagad is made</div>
+  <div class="making-grid">
+
+    <div class="making-step reveal">
+      <div class="making-num">01</div>
+      <div class="making-bar"></div>
+      <div class="making-title">sourced</div>
+      <p class="making-body">discarded denim jeans collected from waghri community scrap dealers in vadodara. nothing new. everything recovered. every pair that would have ended in a landfill starts here instead.</p>
+    </div>
+
+    <div class="making-step reveal d2">
+      <div class="making-num">02</div>
+      <div class="making-bar"></div>
+      <div class="making-title">washed</div>
+      <p class="making-body">each piece washed and sterilized by local dhobis. decades of wear, removed. the denim comes out clean, ready for its second life — carrying nothing but the character of its past.</p>
+    </div>
+
+    <div class="making-step reveal d3">
+      <div class="making-num">03</div>
+      <div class="making-bar"></div>
+      <div class="making-title">cut</div>
+      <p class="making-body">sorted by weight and condition. inspected for integrity — not to eliminate imperfection, but to understand it. cut to pattern. every flaw is noted, mapped, and kept.</p>
+    </div>
+
+    <div class="making-step reveal d4">
+      <div class="making-num">04</div>
+      <div class="making-bar"></div>
+      <div class="making-title">stitched</div>
+      <p class="making-body">sewn by skilled women tailors — the hands at the heart of dagad. reinforced seams. double-layered stress points. every bag unique because every piece of denim is unique.</p>
+    </div>
+
+    <div class="making-step reveal d4">
+      <div class="making-num">05</div>
+      <div class="making-bar"></div>
+      <div class="making-title">finished</div>
+      <p class="making-body">quality checked. packed. photographed. each dagad is assigned its own identity before it leaves. from a vadodara workshop to your shoulder.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ FEATURES ═══ -->
+<section class="features-section">
+  <div class="section-tag">what dagad is built for</div>
+  <div class="features-list">
+
+    <div class="feature-row reveal">
+      <div class="feature-name">rugged</div>
+      <div class="feature-desc">denim that survived years before becoming dagad. already tested — by life, not a lab.</div>
+      <div class="feature-tag">core design</div>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-name">engineered</div>
+      <div class="feature-desc">reinforced seams, stress-point stitching, weight-balanced construction. function first.</div>
+      <div class="feature-tag">structural</div>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-name">imperfect</div>
+      <div class="feature-desc">discolorations, fading, the ghost of a pocket. these are not flaws — they are the design.</div>
+      <div class="feature-tag">philosophy</div>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-name">anti-plastic</div>
+      <div class="feature-desc">every time you carry dagad, you don't pick up a plastic bag. daily. physical. refusal.</div>
+      <div class="feature-tag">mission</div>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-name">unrepeatable</div>
+      <div class="feature-desc">no two pieces of denim are the same. yours is singular. there is no other one like it.</div>
+      <div class="feature-tag">identity</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ PRICING ═══ -->
+<section class="pricing-section" id="pricing">
+  <div class="section-tag">choose your price. choose your impact.</div>
+
+  <p class="pricing-intro">the dagad you carry is identical whether you pay no regret, happy, or dil se. same bag. same quality. same philosophy stitched into every seam. the difference is how far your rupees travel — and how much of this movement you choose to fuel.</p>
+
+  <div class="pricing-grid">
+
+    <!-- tier 01 -->
+    <div class="pricing-card reveal">
+      <span class="pricing-badge">tier 01</span>
+      <div class="pricing-price"><span class="currency">₹</span>233 - 499</div>
+      <div style="font-family:var(--mono);font-size:11px;letter-spacing:0.12em;color:rgba(200,216,74,0.3);">depends on bag type</div>
+      <div class="pricing-heading">the fair price.</div>
+      <p class="pricing-body">this is the minimum dagad needs to exist. it covers the denim, the wash, the cut, the stitch, the finish, and the logistics. every rupee is accounted for. nothing extracted, nothing inflated. this is what conscious production actually costs.</p>
+      <div class="pricing-footer">for the person who wants to carry a dagad. full stop.</div>
+    </div>
+
+    <!-- tier 02 — featured -->
+    <div class="pricing-card featured reveal d2">
+      <span class="pricing-badge">tier 02 · most chosen</span>
+      <div class="pricing-price"><span class="currency">₹</span>253 - 549</div>
+      <div style="font-family:var(--mono);font-size:11px;letter-spacing:0.12em;color:rgba(200,216,74,0.3);">depends on bag type</div>
+      <div class="pricing-heading">the gratitude price.</div>
+      <p class="pricing-body">a little more. it goes directly to the women tailors and the waghri community dealers who make dagad possible. when you choose happy, you're not just buying a bag. you're paying the people behind it what they actually deserve.</p>
+      <div class="pricing-footer">for the person who believes good work should be rewarded.</div>
+    </div>
+
+    <!-- tier 03 -->
+    <div class="pricing-card reveal d3">
+      <span class="pricing-badge">tier 03</span>
+      <div class="pricing-price" style="font-size:clamp(36px,5vw,56px);color:var(--acid);">you decide</div>
+      <div style="min-height:20px;"></div>
+      <div class="pricing-heading">the movement price.</div>
+      <p class="pricing-body">this isn't a purchase — it's an investment. in the ecosystem. in the next range. in more artisans, more communities, more dagad. choosing dil se doesn't buy you a better bag. it builds a better movement.</p>
+      <div class="pricing-footer">
+        for the person who sees the bigger picture.<br>
+        <a href="https://wa.me/919820013990?text=hi%20kshiiteej!%20i%20want%20to%20choose%20the%20dil%20se%20price." 
+           target="_blank" 
+           style="color:var(--acid) !important;text-decoration:none;font-weight:400;font-family:var(--mono);font-size:12px;letter-spacing:0.14em;">
+         chat with us on whatsapp →
+        </a>
+     </div>
+    </div>
+  </div>
+
+  <div class="pricing-bottom">
+    same bag · same quality · <span>different way to care</span>
+  </div>
+</section>
+
+<!-- ═══ SHOP ═══ -->
+<section class="shop-section" id="shopGrid">
+  <div class="section-tag">the catalogue</div>
+  <p class="shop-intro">6 styles · 10 of each · click any card to see individual bags</p>
+
+  <div class="shop-grid" id="shopTypeGrid">
+
+    <div class="shop-tile" data-type="mini tote" data-ids="000081,000082,000083,000084,000085,000086,000087,000088,000089,000090">
+      <div class="shop-tile-photo">
+        <div class="shop-tile-photo-placeholder">photo loading</div>
+        <img src="" alt="mini tote" style="display:none;">
+      </div>
+      <div class="shop-tile-body">
+        <div class="shop-tile-name">mini tote</div>
+        <div class="shop-tile-variant">000081 — 000090</div>
+        <ul class="shop-tile-uses">
+          <li>daily market run</li>
+          <li>office lunch &amp; extras</li>
+          <li>beach or picnic</li>
+          <li>gym gear</li>
+        </ul>
+        <div class="shop-tile-footer">
+          <span class="shop-tile-count">10 bags available</span>
+          <span class="shop-tile-arrow">▾</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="shop-tile" data-type="tote" data-ids="000101,000102,000103,000104,000105,000106,000107,000108,000109,000110">
+      <div class="shop-tile-photo">
+        <div class="shop-tile-photo-placeholder">photo loading</div>
+        <img src="" alt="tote" style="display:none;">
+      </div>
+      <div class="shop-tile-body">
+        <div class="shop-tile-name">tote</div>
+        <div class="shop-tile-variant">000101 — 000110</div>
+        <ul class="shop-tile-uses">
+          <li>everyday carry</li>
+          <li>shopping &amp; errands</li>
+          <li>work &amp; commute</li>
+          <li>travel day bag</li>
+        </ul>
+        <div class="shop-tile-footer">
+          <span class="shop-tile-count">10 bags available</span>
+          <span class="shop-tile-arrow">▾</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="shop-tile" data-type="tote w/ pockets" data-ids="000121,000122,000123,000124,000125,000126,000127,000128,000129,000130">
+      <div class="shop-tile-photo">
+        <div class="shop-tile-photo-placeholder">photo loading</div>
+        <img src="" alt="tote with pockets" style="display:none;">
+      </div>
+      <div class="shop-tile-body">
+        <div class="shop-tile-name">tote w/ pockets</div>
+        <div class="shop-tile-variant">000121 — 000130</div>
+        <ul class="shop-tile-uses">
+          <li>laptop &amp; documents</li>
+          <li>commute &amp; transit</li>
+          <li>college &amp; campus</li>
+          <li>organised daily carry</li>
+        </ul>
+        <div class="shop-tile-footer">
+          <span class="shop-tile-count">10 bags available</span>
+          <span class="shop-tile-arrow">▾</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="shop-tile" data-type="shopper s" data-ids="000141,000142,000143,000144,000145,000146,000147,000148,000149,000150">
+      <div class="shop-tile-photo">
+        <div class="shop-tile-photo-placeholder">photo loading</div>
+        <img src="" alt="shopper s" style="display:none;">
+      </div>
+      <div class="shop-tile-body">
+        <div class="shop-tile-name">shopper s</div>
+        <div class="shop-tile-variant">000141 — 000150</div>
+        <ul class="shop-tile-uses">
+          <li>quick grocery run</li>
+          <li>street market browse</li>
+          <li>phone, wallet, keys</li>
+          <li>short travel hops</li>
+        </ul>
+        <div class="shop-tile-footer">
+          <span class="shop-tile-count">10 bags available</span>
+          <span class="shop-tile-arrow">▾</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="shop-tile" data-type="shopper l" data-ids="000167,000168,000169,000170,000171,000172,000173,000174,000175,000176">
+      <div class="shop-tile-photo">
+        <div class="shop-tile-photo-placeholder">photo loading</div>
+        <img src="" alt="shopper l" style="display:none;">
+      </div>
+      <div class="shop-tile-body">
+        <div class="shop-tile-name">shopper l</div>
+        <div class="shop-tile-variant">000167 — 000176</div>
+        <ul class="shop-tile-uses">
+          <li>big grocery haul</li>
+          <li>weekend overnights</li>
+          <li>studio &amp; craft supplies</li>
+          <li>airport gate bag</li>
+        </ul>
+        <div class="shop-tile-footer">
+          <span class="shop-tile-count">10 bags available</span>
+          <span class="shop-tile-arrow">▾</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="shop-tile" data-type="backpack" data-ids="000191,000192,000193,000194,000195,000196,000197,000198,000199,000200">
+      <div class="shop-tile-photo">
+        <div class="shop-tile-photo-placeholder">photo loading</div>
+        <img src="" alt="backpack" style="display:none;">
+      </div>
+      <div class="shop-tile-body">
+        <div class="shop-tile-name">backpack</div>
+        <div class="shop-tile-variant">000191 — 000200</div>
+        <ul class="shop-tile-uses">
+          <li>laptop + daily gear</li>
+          <li>college &amp; campus</li>
+          <li>city hiking</li>
+          <li>long commutes</li>
+        </ul>
+        <div class="shop-tile-footer">
+          <span class="shop-tile-count">10 bags available</span>
+          <span class="shop-tile-arrow">▾</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- expand panel — injected by JS -->
+  <div class="shop-expand" id="shopExpand"></div>
+
+</section>
+
+<!-- ═══ CARE ═══ -->
+<section class="care-section">
+  <div class="section-tag">keep it alive</div>
+  <div class="care-grid">
+
+    <div class="reveal">
+      <h2 class="care-headline">
+        keep it<br>alive.<br>
+        <span class="hl">not just clean.</span>
+      </h2>
+      <p class="care-intro">dagad is built to last — but it needs you to meet it halfway. treat it like your favourite pair of jeans: with a little attention and a lot of forgiveness. the more you carry it, the better it looks.</p>
+    </div>
+
+    <div class="care-rules reveal d2">
+
+      <div class="care-rule">
+        <span class="care-rule-num">01</span>
+        <div class="care-rule-content">
+          <div class="care-rule-title">wash like denim</div>
+          <p class="care-rule-body">cold water. gentle cycle. zipper open while washing. air dry — no tumble dryer. it's denim. it knows how to dry itself.</p>
+        </div>
+      </div>
+
+      <div class="care-rule">
+        <span class="care-rule-num">02</span>
+        <div class="care-rule-content">
+          <div class="care-rule-title">carry it everywhere</div>
+          <p class="care-rule-body">dagad gets better with use. like leather. like good shoes. use it daily — market, work, airport. sitting in a cupboard is the worst thing you can do to it.</p>
+        </div>
+      </div>
+
+      <div class="care-rule">
+        <span class="care-rule-num">03</span>
+        <div class="care-rule-content">
+          <div class="care-rule-title">repair, don't replace</div>
+          <p class="care-rule-body">a seam gives way? take it to a tailor. a patch or a stitch adds character — it doesn't diminish it. repair is the philosophy made physical.</p>
+        </div>
+      </div>
+
+      <div class="care-rule">
+        <span class="care-rule-num">04</span>
+        <div class="care-rule-content">
+          <div class="care-rule-title">embrace the change</div>
+          <p class="care-rule-body">dagad will age. the denim will soften, colours will shift, wear will show. this is not deterioration — it's development. let it happen. that's wabi-sabi.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ IMPACT ═══ -->
+<section class="impact-section">
+  <div class="section-tag" style="color:rgba(8,8,7,0.4);">dagad in numbers</div>
+  <div class="impact-grid">
+
+    <div class="impact-item">
+      <div class="impact-num" id="impactWater" data-target="0">—</div>
+      <span class="impact-unit">litres of water recovered</span>
+      <div class="impact-label">one pair of jeans. two bags. nothing wasted.</div>
+    </div>
+
+    <div class="impact-item">
+      <div class="impact-num" id="impactCarbon" data-target="0">—</div>
+      <span class="impact-unit">co₂ material value extended</span>
+      <div class="impact-label">the carbon cost of making those jeans — carried forward, not buried.</div>
+    </div>
+
+    <div class="impact-item">
+      <div class="impact-num" id="impactPeople" data-target="20">20</div>
+      <span class="impact-unit">people in the supply chain supported</span>
+      <div class="impact-label">waghri dealers. dhobis. women tailors. every pair passes through all of them.</div>
+    </div>
+
+    <div class="impact-item">
+      <div class="impact-num" data-target="∞">∞</div>
+      <span class="impact-unit">plastic bags</span>
+      <div class="impact-label">not picked up because of you</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ SHOP CTA ═══ -->
+<section class="shop-cta-section">
+  <h2 class="shop-cta-headline reveal">
+    carry<br><span class="hl">dagad.</span>
+  </h2>
+  <p class="shop-cta-sub reveal d2">pick your bag. choose your price. start your part.</p>
+  <a href="#shopGrid" class="cta-btn filled reveal d3">shop dagad →</a>
+  <a href="kshiiteej.html" class="cta-btn dim" style="margin-top:8px;">the movement behind dagad →</a>
+</section>
+
+
+<!-- component slots -->
+<div id="ticker-slot"></div>
+<div id="footer-slot"></div>
+
+<script src="components/shared.js"></script>
+<script>
+/* ── INVENTORY DATA ── */
+let inventory = {};
+
+async function loadInventory() {
+  try {
+    const res  = await fetch('dagad_inventory.csv');
+    const text = await res.text();
+    const rows = parseCSVLocal(text);
+    rows.forEach(r => {
+  const id = (r.bag_number || '').trim();
+  if (id && id.length > 0) inventory[id] = r;
+});
+  } catch (e) {
+    console.warn('dagad: could not load inventory', e);
+  }
+}
+
+function parseCSVLocal(text) {
+  const lines   = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h =>
+    h.trim().replace(/^"|"$/g, '').toLowerCase().replace(/\s+/g, '_')
+  );
+  return lines.slice(1).map(line => {
+    const vals = splitLine(line);
+    const obj  = {};
+    headers.forEach((h, i) => {
+      obj[h] = (vals[i] || '').trim().replace(/^"|"$/g, '');
+    });
+    return obj;
+  });
+}
+
+function splitLine(line) {
+  const res = []; let cur = ''; let inQ = false;
+  for (const ch of line) {
+    if (ch === '"') { inQ = !inQ; }
+    else if (ch === ',' && !inQ) { res.push(cur); cur = ''; }
+    else { cur += ch; }
+  }
+  res.push(cur);
+  return res;
+}
+
+function cleanUrl(url) {
+  if (!url) return '';
+  url = url.trim();
+  if (url.includes('dl.dropboxusercontent.com')) return url;
+  try {
+    const u = new URL(url);
+    if (u.hostname.includes('dropbox.com')) {
+      u.hostname = 'dl.dropboxusercontent.com';
+      u.searchParams.delete('dl');
+      u.searchParams.delete('raw');
+      return u.toString();
+    }
+  } catch (e) {}
+  return url;
+}
+
+function computeImpact() {
+  const totalBags = Object.keys(inventory).length;
+  if (!totalBags) return;
+
+  const water  = totalBags * 4000;
+  const carbon = (totalBags * 16.5).toFixed(1);
+
+  /* convert water to lakhs */
+  const waterLakhs = (water / 100000).toFixed(1);
+
+  const waterEl  = document.getElementById('impactWater');
+  const carbonEl = document.getElementById('impactCarbon');
+
+  if (waterEl) {
+    /* lakhs display — animate from 0 to waterLakhs */
+    waterEl.dataset.target = waterLakhs;
+    waterEl.dataset.suffix = 'L';
+    waterEl.textContent    = waterLakhs + 'L';
+  }
+  if (carbonEl) {
+    carbonEl.dataset.target = carbon;
+    carbonEl.textContent    = carbon;
+  }
+
+  initImpactCounters();
+}
+
+/* ── SHOP TILE PHOTOS — load first image of each type ── */
+function loadTilePhotos() {
+  document.querySelectorAll('.shop-tile').forEach((tile, index) => {
+    const img = tile.querySelector('.shop-tile-photo img');
+    const placeholder = tile.querySelector('.shop-tile-photo-placeholder');
+
+    if (!img) return;
+
+    img.src = `display/${index + 1}.png`;
+    img.style.display = 'block';
+
+    if (placeholder) placeholder.style.display = 'none';
+  });
+}
+
+/* ── SHOP EXPAND PANEL ── */
+let openTile = null;
+
+function buildBagCard(bagId) {
+  const bag    = inventory[bagId.trim()] || {};
+  const status = (bag.status || '').toLowerCase();
+  const sold   = status === 'sold';
+  const char   = bag.character || '—';
+  const priceFair  = bag.price_fair  || '—';
+  const priceHappy = bag.price_happy || '—';
+  const photo  = bag.photo_url ? cleanUrl(bag.photo_url) : '';
+  const type   = bag.type || '';
+
+  return `
+    <div class="bag-card ${sold ? 'carried' : ''}" data-id="${bagId}">
+      <div class="bag-card-photo">
+        ${photo ? `<img src="${photo}" alt="${bagId}" loading="lazy">` : ''}
+      </div>
+      <div class="bag-card-id">${bagId}</div>
+      <div class="bag-card-char">${char}</div>
+      ${!sold ? `
+        <div class="tier-selector">
+          <button class="tier-btn active" onclick="selectTier(this,'no regret')">₹${priceFair}</button>
+          <button class="tier-btn"        onclick="selectTier(this,'happy')">₹${priceHappy}</button>
+          <button class="tier-btn"        onclick="selectTier(this,'dil se')">dil se</button>
+        </div>
+        <a class="bag-card-cta"
+           href="${buildWaUrl(bagId, type, 'no regret')}"
+           target="_blank">
+          order on whatsapp →
+        </a>
+      ` : ''}
+      <div class="bag-card-carried-label">carried.</div>
+    </div>
+  `;
+}
+
+function selectTier(btn, tier) {
+  const card = btn.closest('.bag-card');
+  card.querySelectorAll('.tier-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const id   = card.dataset.id;
+  const bag  = inventory[id] || {};
+  const type = bag.type || '';
+  card.querySelector('.bag-card-cta').href = buildWaUrl(id, type, tier);
+}
+
+function openShopExpand(tile) {
+  const expand  = document.getElementById('shopExpand');
+  const typeName = tile.dataset.type;
+  const ids      = tile.dataset.ids.split(',');
+
+  /* close if same tile clicked again */
+  if (openTile === tile) {
+    tile.classList.remove('open');
+    expand.classList.remove('open');
+    expand.innerHTML = '';
+    openTile = null;
+    return;
+  }
+
+  /* mark tiles */
+  document.querySelectorAll('.shop-tile').forEach(t => t.classList.remove('open'));
+  tile.classList.add('open');
+  openTile = tile;
+
+  /* move expand panel after tile's row */
+  const grid = document.getElementById('shopTypeGrid');
+  grid.after(expand);
+
+  /* build content */
+  expand.innerHTML = `
+    <div class="shop-expand-header">
+      <div class="shop-expand-title">${typeName} — pick your bag</div>
+      <button class="shop-expand-close" onclick="closeExpand()">close ✕</button>
+    </div>
+    <div class="bag-cards-grid">
+      ${ids.map(id => buildBagCard(id.trim())).join('')}
+    </div>
+  `;
+
+  expand.classList.add('open');
+  expand.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function closeExpand() {
+  const expand = document.getElementById('shopExpand');
+  expand.classList.remove('open');
+  expand.innerHTML = '';
+  if (openTile) { openTile.classList.remove('open'); openTile = null; }
+}
+
+/* wire up tiles */
+document.querySelectorAll('.shop-tile').forEach(tile => {
+  tile.addEventListener('click', () => openShopExpand(tile));
+});
+
+/* ── BOOT ── */
+loadComponents(['bag-strip-slot']).then(() => {
+  initNavActive();
+  initReveal();
+  initFooterAnimation();
+  loadInventory().then(() => {
+    loadTilePhotos();
+    computeImpact();
+  });
+});
+</script>
+
+</body>
+</html>

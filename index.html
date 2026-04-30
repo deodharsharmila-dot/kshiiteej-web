@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kshiiteej — revolution is underway</title>
+<link rel="stylesheet" href="components/shared.css">
+<style>
+
+/* ── HOME PAGE — specific styles ─────────────────────────────── */
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: calc(var(--nav-height) + 48px) var(--pad-x) 80px;
+  position: relative; z-index: 10;
+  border-bottom: var(--border-acid);
+  text-align: center;
+}
+
+.hero-kicker {
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.3em;
+  color: rgba(200,216,74,0.45);
+  margin-bottom: 24px;
+  animation: fadeIn 0.8s ease 0.2s both;
+}
+
+.hero-headline {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(52px, 9vw, 130px);
+  line-height: 0.9; letter-spacing: 0.03em;
+  color: var(--warm);
+  margin-bottom: 56px;
+  animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both;
+}
+.hero-headline .hl { color: var(--orange); }
+
+/* ── ROULETTE MACHINE ── */
+.roulette-machine {
+  width: 100%; max-width: 960px;
+  border: 1px solid rgba(200,216,74,0.15);
+  position: relative;
+  animation: fadeIn 1s ease 0.4s both;
+}
+
+/* split screen — number left, photo right */
+.roulette-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 420px;
+}
+
+/* left — bag number display */
+.roulette-left {
+  border-right: 1px solid rgba(200,216,74,0.1);
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 48px 36px;
+  position: relative; overflow: hidden;
+  background: rgba(8,8,7,0.8);
+}
+
+.roulette-label {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.3em;
+  color: rgba(200,216,74,0.3);
+  margin-bottom: 16px;
+}
+
+.roulette-number {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(64px, 10vw, 130px);
+  line-height: 0.9; letter-spacing: 0.04em;
+  color: var(--orange);
+  transition: color 0.1s;
+  min-height: 120px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.roulette-type {
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.2em;
+  color: rgba(200,216,74,0.4);
+  margin-top: 12px;
+  min-height: 20px;
+}
+
+/* slot machine digit animation */
+.roulette-number.spinning {
+  color: var(--acid);
+  animation: digitFlicker 0.08s linear infinite;
+}
+@keyframes digitFlicker {
+  0%   { opacity: 1; }
+  49%  { opacity: 1; }
+  50%  { opacity: 0.3; }
+  99%  { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+/* right — bag photo */
+.roulette-right {
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(30,58,95,0.08);
+  position: relative; overflow: hidden;
+  min-height: 420px;
+}
+
+.roulette-photo {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  position: absolute; inset: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.roulette-photo.visible { opacity: 1; }
+
+.roulette-photo-placeholder {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.24em;
+  color: rgba(200,216,74,0.12);
+  text-align: center; padding: 24px;
+  position: relative; z-index: 1;
+}
+
+/* bottom bar */
+.roulette-bottom {
+  border-top: 1px solid rgba(200,216,74,0.1);
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 20px 36px;
+  background: rgba(8,8,7,0.9);
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+/* trigger button */
+.trigger-btn {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 22px; letter-spacing: 0.1em;
+  background: var(--orange); color: var(--black);
+  border: none; padding: 14px 40px; min-height: 52px;
+  transition: opacity 0.2s, transform 0.1s;
+  position: relative; overflow: hidden;
+  flex-shrink: 0;
+}
+.trigger-btn:hover { opacity: 0.88; }
+.trigger-btn:active { transform: scale(0.97); }
+.trigger-btn:disabled { opacity: 0.4; pointer-events: none; }
+
+.trigger-btn::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(255,255,255,0.15);
+  opacity: 0; transition: opacity 0.2s;
+}
+.trigger-btn:hover::after { opacity: 1; }
+
+/* whatsapp CTA — hidden until bag revealed */
+.roulette-wa {
+  display: none;
+  align-items: center; gap: 10px;
+  padding: 14px 28px; min-height: 52px;
+  background: #25D366; color: var(--black);
+  text-decoration: none;
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em;
+  transition: opacity 0.2s; flex-shrink: 0;
+}
+.roulette-wa.show { display: inline-flex; }
+.roulette-wa:hover { opacity: 0.88; }
+.roulette-wa svg { width: 14px; height: 14px; fill: var(--black); }
+
+.roulette-note {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.14em;
+  color: rgba(200,216,74,0.25);
+  flex: 1;
+}
+
+/* countdown overlay */
+.roulette-countdown {
+  position: absolute; inset: 0;
+  display: none; align-items: center; justify-content: center;
+  background: rgba(8,8,7,0.85);
+  z-index: 10;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(100px, 18vw, 200px);
+  color: var(--orange);
+  letter-spacing: 0.04em;
+}
+.roulette-countdown.show { display: flex; }
+
+/* ── SCROLL SENTENCES ── */
+.scroll-sentences {
+  position: relative; z-index: 10;
+}
+
+/* ── BAG STRIP ── */
+/* handled by component + shared.css */
+
+/* ── EXPLORE CTA ── */
+.explore-section {
+  position: relative; z-index: 10;
+  padding: var(--pad-y) var(--pad-x);
+  border-top: var(--border-acid);
+  display: flex; flex-direction: column;
+  align-items: center; gap: 32px;
+  text-align: center;
+}
+
+.explore-headline {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(52px, 8vw, 110px);
+  line-height: 0.9; letter-spacing: 0.03em;
+  color: var(--warm);
+}
+.explore-headline .hl { color: var(--orange); }
+
+.explore-sub {
+  font-family: var(--mono);
+  font-size: 13px; letter-spacing: 0.12em;
+  color: rgba(242,237,228,0.3);
+  max-width: 480px;
+}
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  .hero { padding: calc(var(--nav-height) + 32px) var(--pad-x) 56px; }
+  .roulette-split { grid-template-columns: 1fr; }
+  .roulette-left { border-right: none; border-bottom: 1px solid rgba(200,216,74,0.1); min-height: 240px; }
+  .roulette-right { min-height: 240px; }
+  .roulette-bottom { flex-direction: column; align-items: stretch; padding: 16px 22px; gap: 12px; }
+  .trigger-btn { width: 100%; }
+  .roulette-wa { width: 100%; justify-content: center; }
+  .explore-section { padding: var(--pad-y) var(--pad-x) 100px; }
+}
+
+/* scroll sentences — home override */
+.scroll-sentence {
+  background: var(--black);
+  border-top: var(--border-acid);
+  justify-content: center;
+  align-items: center;
+}
+
+.scroll-sentence-text {
+  font-size: clamp(56px, 12vw, 160px);
+  text-align: center;
+  max-width: 90vw;
+}
+</style>
+</head>
+<body data-page="home">
+
+<!-- component slots -->
+<div id="ambient-slot"></div>
+<div id="nav-slot"></div>
+
+<!-- ═══ HERO — ROULETTE ═══ -->
+<section class="hero">
+
+  <h1 class="hero-headline">let the bag<br><span class="hl">find you</span></h1>
+
+  <div class="roulette-machine">
+
+    <!-- countdown overlay -->
+    <div class="roulette-countdown" id="rouletteCountdown"></div>
+
+    <div class="roulette-split">
+
+      <!-- left — number -->
+      <div class="roulette-left">
+        <div class="roulette-label">bag number</div>
+        <div class="roulette-number" id="rouletteNumber">-</div>
+        <div class="roulette-type" id="rouletteType"></div>
+      </div>
+
+      <!-- right — photo -->
+      <div class="roulette-right">
+        <div class="roulette-photo-placeholder" id="roulettePlaceholder">pull the trigger</div>
+        <img class="roulette-photo" id="roulettePhoto" src="" alt="dagad bag">
+      </div>
+
+    </div>
+
+    <!-- bottom bar -->
+    <div class="roulette-bottom">
+      <button class="trigger-btn" id="triggerBtn" onclick="pullTrigger()">
+        pull trigger →
+      </button>
+      <a class="roulette-wa" id="rouletteWa" href="#" target="_blank">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        order this bag →
+      </a>
+      <div class="roulette-note" id="rouletteNote">60 available bags · pull to discover yours</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ SCROLL SENTENCES ═══ -->
+<div class="scroll-sentences">
+  <div class="scroll-sentence">
+    <p class="scroll-sentence-text">no two the same.</p>
+  </div>
+  <div class="scroll-sentence">
+    <p class="scroll-sentence-text">made from <span class="hl">discarded jeans.</span></p>
+  </div>
+  <div class="scroll-sentence">
+    <p class="scroll-sentence-text">built to be carried,<br>every day.</p>
+  </div>
+  <div class="scroll-sentence">
+    <p class="scroll-sentence-text">this is <span class="hl">dagad.</span></p>
+  </div>
+</div>
+
+
+<!-- ═══ BAG STRIP ═══ -->
+<div id="bag-strip-slot"></div>
+
+<!-- ═══ EXPLORE CTA ═══ -->
+<section class="explore-section">
+  <h2 class="explore-headline reveal">
+    explore<br><span class="hl">dagad →</span>
+  </h2>
+  <p class="explore-sub reveal d2">60 bags. 6 styles. the full story behind every stitch.</p>
+  <a href="dagad.html" class="cta-btn filled reveal d3">see all bags →</a>
+</section>
+<!-- ═══ KSHIITEEJ LINK ═══ -->
+<div style="position:relative;z-index:10;padding:56px var(--pad-x);border-top:var(--border-acid);display:flex;flex-direction:column;align-items:center;gap:16px;">
+  <div style="font-family:var(--mono);font-size:11px;letter-spacing:0.28em;color:rgba(200,216,74,0.25);">// the people behind the product</div>
+  <a href="kshiiteej.html" style="font-family:var(--display);font-weight:700;font-size:clamp(32px,5vw,64px);letter-spacing:0.04em;color:rgba(242,237,228,0.15);text-decoration:none;transition:color 0.3s;line-height:1;">
+    kshiiteej →
+  </a>
+</div>
+<!-- component slots -->
+<div id="ticker-slot"></div>
+<div id="footer-slot"></div>
+
+<script src="components/shared.js"></script>
+<script>
+
+/* ── INVENTORY ── */
+let bags = []; /* array of available (not sold) bags */
+
+async function loadBags() {
+  try {
+    const res  = await fetch('dagad_inventory.csv');
+    const text = await res.text();
+    const rows = parseCSVHome(text);
+    bags = rows.filter(r => {
+      const id     = (r.bag_number || '').trim();
+      const status = (r.status || '').toLowerCase().trim();
+      return id && id.length > 0 && status !== 'sold';
+    });
+    /* update note with live count */
+    const note = document.getElementById('rouletteNote');
+    if (note) note.textContent = bags.length + ' available bags · pull to discover yours';
+  } catch(e) {
+    console.warn('home: could not load inventory', e);
+  }
+}
+
+function parseCSVHome(text) {
+  const lines   = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h =>
+    h.trim().replace(/^"|"$/g,'').toLowerCase().replace(/\s+/g,'_')
+  );
+  return lines.slice(1).map(line => {
+    const vals = splitLineHome(line);
+    const obj  = {};
+    headers.forEach((h,i) => { obj[h] = (vals[i]||'').trim().replace(/^"|"$/g,''); });
+    return obj;
+  }).filter(r => Object.values(r).some(v => v !== ''));
+}
+
+function splitLineHome(line) {
+  const res=[]; let cur=''; let inQ=false;
+  for(const ch of line){
+    if(ch==='"'){inQ=!inQ;}
+    else if(ch===','&&!inQ){res.push(cur);cur='';}
+    else{cur+=ch;}
+  }
+  res.push(cur); return res;
+}
+
+function cleanUrlHome(url) {
+  if (!url) return '';
+  url = url.trim();
+  if (url.includes('dl.dropboxusercontent.com')) return url;
+  try {
+    const u = new URL(url);
+    if (u.hostname.includes('dropbox.com')) {
+      u.hostname = 'dl.dropboxusercontent.com';
+      u.searchParams.delete('dl');
+      u.searchParams.delete('raw');
+      return u.toString();
+    }
+  } catch(e) {}
+  return url;
+}
+
+/* ── ROULETTE ── */
+let isSpinning = false;
+let currentBag = null;
+
+function pullTrigger() {
+  if (isSpinning || !bags.length) return;
+  isSpinning = true;
+
+  const btn      = document.getElementById('triggerBtn');
+  const numEl    = document.getElementById('rouletteNumber');
+  const typeEl   = document.getElementById('rouletteType');
+  const photoEl  = document.getElementById('roulettePhoto');
+  const placeholder = document.getElementById('roulettePlaceholder');
+  const waBtn    = document.getElementById('rouletteWa');
+  const note     = document.getElementById('rouletteNote');
+
+  /* pick random available bag */
+  const pool = bags.filter(b => !currentBag || b.bag_number !== currentBag.bag_number);
+  const pick = pool.length ? pool[Math.floor(Math.random() * pool.length)] : bags[Math.floor(Math.random() * bags.length)];
+
+  /* preload photo while spin plays */
+  if (pick.photo_url) {
+  const preload = new Image();
+  preload.src = cleanUrlHome(pick.photo_url);
+  }
+
+  btn.disabled = true;
+  waBtn.classList.remove('show');
+
+  /* hide current photo */
+  photoEl.classList.remove('visible');
+
+  
+
+  /* slot machine spin */
+  const allIds     = bags.map(b => b.bag_number);
+  const spinDuration = 2200; /* ms */
+  const startTime    = Date.now();
+
+  numEl.classList.add('spinning');
+  typeEl.textContent = '';
+
+  function spinStep() {
+    const elapsed  = Date.now() - startTime;
+    const progress = elapsed / spinDuration;
+
+    if (progress < 1) {
+      /* show random IDs cycling fast → slow */
+      const speed = Math.max(40, 200 * progress * progress);
+      const rand  = allIds[Math.floor(Math.random() * allIds.length)];
+      numEl.textContent = rand;
+
+      setTimeout(spinStep, speed);
+    } else {
+      /* land on the picked bag */
+      numEl.classList.remove('spinning');
+      numEl.textContent  = pick.bag_number;
+      typeEl.textContent = pick.type || '';
+      currentBag = pick;
+
+      /* load photo */
+      if (pick.photo_url) {
+        const url = cleanUrlHome(pick.photo_url);
+        photoEl.src = url;
+        placeholder.style.display = 'none';
+        photoEl.onload  = () => photoEl.classList.add('visible');
+        photoEl.onerror = () => { placeholder.style.display = ''; };
+      }
+
+      /* whatsapp CTA */
+      const waUrl = buildWaUrl(pick.bag_number, pick.type || '', 'no regret');
+      waBtn.href = waUrl;
+      waBtn.classList.add('show');
+
+      note.textContent = 'not your bag? pull again.';
+      btn.textContent  = 'pull again →';
+      btn.disabled     = false;
+      isSpinning       = false;
+    }
+  }
+
+  spinStep();
+}
+
+/* ── BOOT ── */
+loadComponents([]).then(() => {
+  initNavActive();
+  initReveal();
+  initScrollSentences();
+  initFooterAnimation();
+  loadBags();
+});
+
+</script>
+</body>
+</html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kshiiteej — the movement</title>
+<link rel="stylesheet" href="components/shared.css">
+<style>
+
+/* ── KSHIITEEJ PAGE — specific styles ───────────────────────── */
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 100px var(--pad-x) 80px;
+  position: relative; z-index: 10;
+  border-bottom: var(--border-acid);
+}
+
+.hero-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px; align-items: center;
+  width: 100%;
+}
+
+.hero-headline {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(60px, 10vw, 140px);
+  line-height: 0.88; letter-spacing: 0.03em;
+  color: var(--warm);
+  animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both;
+}
+.hero-headline .hl { color: var(--orange); }
+
+.hero-subhead {
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.16em;
+  color: rgba(200,216,74,0.5);
+  margin-top: 32px;
+  animation: fadeIn 0.8s ease 0.5s both;
+}
+
+/* ── PILLARS — Ebbs pattern 03 ── */
+.pillars-section {
+  position: relative; z-index: 10;
+  padding: var(--pad-y) var(--pad-x);
+  border-top: var(--border-acid);
+}
+
+/* override shared.css pillars-grid for this page */
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+  margin-top: 48px;
+}
+
+.pillar {
+  padding: 56px 48px;
+  border: var(--border-acid);
+  margin-right: -1px; margin-bottom: -1px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.3s, background 0.3s;
+}
+.pillar:hover {
+  border-color: rgba(200,216,74,0.3);
+  background: rgba(200,216,74,0.02);
+}
+
+.pillar-num {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(100px, 14vw, 180px);
+  line-height: 0.85; letter-spacing: 0.02em;
+  color: var(--orange); opacity: 0.12;
+  margin-bottom: 20px;
+  user-select: none;
+  transition: opacity 0.3s;
+}
+.pillar:hover .pillar-num { opacity: 0.2; }
+
+.pillar-title {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(36px, 4.5vw, 60px);
+  line-height: 0.92; letter-spacing: 0.03em;
+  color: var(--warm);
+  margin-bottom: 20px;
+}
+
+.pillar-body {
+  font-family: var(--mono);
+  font-size: 13px; letter-spacing: 0.07em;
+  line-height: 1.85;
+  color: rgba(242,237,228,0.45);
+  max-width: 420px;
+}
+
+/* ── CLOSING CTA ── */
+.closing-section {
+  position: relative; z-index: 10;
+  padding: var(--pad-y) var(--pad-x);
+  border-top: var(--border-acid);
+  background: linear-gradient(180deg, transparent, rgba(232,80,10,0.03) 60%, transparent);
+}
+
+.closing-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px; align-items: center;
+}
+
+.closing-statement {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(36px, 5vw, 68px);
+  line-height: 0.95; letter-spacing: 0.02em;
+  color: rgba(242,237,228,0.25);
+}
+.closing-statement span { color: var(--warm); }
+.closing-statement .hl { color: var(--orange); }
+
+.closing-right {
+  display: flex; flex-direction: column;
+  gap: 24px; align-items: flex-start;
+}
+
+.closing-body {
+  font-family: var(--mono);
+  font-size: 13px; letter-spacing: 0.07em;
+  line-height: 1.85;
+  color: rgba(242,237,228,0.42);
+}
+
+/* ── MANIFESTO GRID ── */
+.manifesto-section {
+  position: relative; z-index: 10;
+  padding: var(--pad-y) var(--pad-x);
+  border-top: var(--border-acid);
+}
+.manifesto-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+  margin-top: 48px;
+}
+.manifesto-cell {
+  padding: 48px 40px;
+  border: var(--border-acid);
+  margin-right: -1px; margin-bottom: -1px;
+  transition: border-color 0.25s;
+}
+.manifesto-cell:hover { border-color: rgba(200,216,74,0.3); }
+
+.manifesto-title {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 0.92; letter-spacing: 0.04em;
+  color: var(--orange);
+  margin-bottom: 20px;
+}
+.manifesto-body {
+  font-family: var(--mono);
+  font-size: 13px; letter-spacing: 0.07em;
+  line-height: 1.85;
+  color: rgba(242,237,228,0.45);
+}
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  .hero { padding: 90px var(--pad-x) 56px; }
+  .hero-split { grid-template-columns: 1fr; gap: 32px; }
+  .carousel-pill { max-width: 100%; margin-left: 0; }
+
+  .pillars-grid { grid-template-columns: 1fr; }
+  .pillar { margin-right: 0; padding: 40px 28px; }
+  .pillar-num { font-size: clamp(72px, 20vw, 120px); }
+
+  .closing-inner { grid-template-columns: 1fr; gap: 40px; }
+  .closing-right { align-items: stretch; }
+  .manifesto-grid { grid-template-columns: 1fr; }
+  .manifesto-cell { margin-right: 0; }
+}
+
+</style>
+</head>
+<body data-page="kshiiteej">
+
+<!-- component slots -->
+<div id="ambient-slot"></div>
+<div id="nav-slot"></div>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div>
+  <div class="section-tag">the movement</div>
+  <h1 class="hero-headline">
+    conscious<br>
+    living ·<br>
+    conscious<br>
+    <span class="hl">choice</span>
+  </h1>
+  <div class="hero-subhead">a faceless collective from vadodara, india</div>
+</div>
+</section>
+
+<!-- ═══ MANIFESTO GRID ═══ -->
+<section class="manifesto-section">
+  <div class="section-tag">who we are</div>
+  <div class="manifesto-grid">
+
+    <div class="manifesto-cell reveal">
+      <div class="manifesto-title">kshiiteej</div>
+      <p class="manifesto-body">a movement for conscious living in a chaotic world. we believe small lifestyle shifts can create real change — for the planet and for us. this isn't just sustainability — it's a mindset shift. one choice at a time.</p>
+    </div>
+
+    <div class="manifesto-cell reveal d2">
+      <div class="manifesto-title">the meaning</div>
+      <p class="manifesto-body">kshiiteej means horizon — and also the limit of what we see. it started with one person questioning the way we live. today, it's a faceless collective led by people like you — aware, intentional, and ready for change.</p>
+    </div>
+
+    <div class="manifesto-cell reveal">
+      <div class="manifesto-title">our vision</div>
+      <p class="manifesto-body">to build a movement of cooperative living — where conscious choices create deeper happiness and a sustainable future. a world where the smallest actions, taken collectively, create monumental change.</p>
+    </div>
+
+    <div class="manifesto-cell reveal d2">
+      <div class="manifesto-title">our mission</div>
+      <p class="manifesto-body">to create products and ideas that challenge throwaway culture. we focus on what lasts — circularity, utility, and purpose. by living with karmic awareness, we can reshape how we relate to the earth and to each other.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ PILLARS ═══ -->
+<section class="pillars-section">
+  <div class="section-tag">what we stand on</div>
+
+  <div class="pillars-grid">
+
+    <!-- 01 circularity -->
+    <div class="pillar reveal">
+      <div class="pillar-num">01</div>
+      <div class="pillar-title">circularity</div>
+      <p class="pillar-body">nothing is waste until we decide it is. every material has a next life. every object, a second purpose. circularity is not a recycling programme — it is a refusal to accept that things must end. we design for continuation, not disposal. the loop is the point.</p>
+    </div>
+
+    <!-- 02 karmic conscience -->
+    <div class="pillar reveal d2">
+      <div class="pillar-num">02</div>
+      <div class="pillar-title">karmic conscience</div>
+      <p class="pillar-body">every choice leaves a mark. the things we buy, discard, and ignore — they ripple outward in ways we rarely trace. karmic conscience is the practice of tracing them anyway. of asking: what does this cost the world? and choosing accordingly. slowly, deliberately, every day.</p>
+    </div>
+
+    <!-- 03 wabi-sabi -->
+    <div class="pillar reveal">
+      <div class="pillar-num">03</div>
+      <div class="pillar-title">wabi-sabi</div>
+      <p class="pillar-body">the scratch is not a flaw. the fade is not failure. wabi-sabi is the japanese understanding that imperfection is not something to fix — it is something to sit with. our products carry their past lives visibly. we think that's beautiful. we think you will too.</p>
+    </div>
+
+    <!-- 04 cooperative existence -->
+    <div class="pillar reveal d2">
+      <div class="pillar-num">04</div>
+      <div class="pillar-title">cooperative existence</div>
+      <p class="pillar-body">we are not isolated consumers. we are nodes in a web — connected to the hands that made what we carry, the communities that sourced the materials, the planet that gave them. cooperative existence means acknowledging that web. and choosing to strengthen it rather than strain it.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ CLOSING ═══ -->
+<section class="closing-section">
+  <div class="closing-inner">
+
+    <div class="closing-statement reveal">
+  the horizon is<br>
+  <span>not distant.</span><br>
+  it begins with<br>
+  <span class="hl">a choice.</span>
+    </div>
+
+    <div class="closing-right reveal d2">
+      <p class="closing-body">kshiiteej is not a brand you follow. it is a shift you participate in. the products are the entry point — the philosophy is the destination.</p>
+      <a href="contact.html" class="cta-btn filled">join the movement →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- component slots -->
+<div id="ticker-slot"></div>
+<div id="footer-slot"></div>
+
+<script src="components/shared.js"></script>
+<script>
+/* ── BOOT ── */
+loadComponents(['bag-strip-slot']).then(() => {
+  initNavActive();
+  initReveal();
+  initFooterAnimation();
+});
+
+</script>
+
+</body>
+</html>
