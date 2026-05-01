@@ -157,7 +157,73 @@
   .soc-row { gap: 20px; }
   .details-row { flex-direction: column; gap: 8px; align-items: flex-start; }
 }
+/* ── CONTACT HERO LAYOUT ── */
 
+/* ── CONTACT HERO LAYOUT ── */
+
+.contact-hero {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* LEFT: TRUE 16:9 IMAGE */
+.hero-left {
+  flex: 1.2;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+.hero-left::before {
+  content: "";
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: url('contacthero.jpg') center/cover no-repeat;
+  display: block;
+}
+
+/* RIGHT: CONTENT FLOW */
+.hero-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px var(--pad-x);
+}
+
+/* HEADLINE FIX */
+.hero {
+  padding: 0;
+  margin-bottom: 40px;
+}
+
+.hero-headline {
+  font-size: clamp(56px, 8vw, 140px);
+  line-height: 0.9;
+  word-break: break-word;
+}
+
+/* FORM SECTION INSIDE RIGHT */
+.form-section {
+  padding: 0;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .contact-hero {
+    flex-direction: column;
+  }
+
+  .hero-left::before {
+    aspect-ratio: 16 / 9;
+  }
+
+  .hero-right {
+    padding: 60px var(--pad-x);
+  }
+}
 </style>
 </head>
 <body data-page="contact">
@@ -167,12 +233,16 @@
 <div id="nav-slot"></div>
 
 <!-- ═══ HERO ═══ -->
-<section class="hero">
-  <div class="section-tag">be part of it</div>
-  <h1 class="hero-headline">join the<br>journey</h1>
-  <p class="hero-subline">we're building something together</p>
-</section>
-
+<div class="contact-hero">
+  <div class="hero-left"></div>
+  <div class="hero-right">
+   <section class="hero">
+   <div class="section-tag">be part of it</div>
+   <h1 class="hero-headline">join the<br>journey</h1>
+   <p class="hero-subline">we're building something together</p>
+   </section>
+  </div>
+</div>
 <!-- ═══ FORM ═══ -->
 <section class="form-section">
   <div class="form-inner reveal">
