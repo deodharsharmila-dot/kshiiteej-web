@@ -339,7 +339,8 @@
 .shop-tile.open  { border-top: 2px solid var(--orange); }
 
 .shop-tile-photo {
-  aspect-ratio: 4/3;
+  aspect-ratio: 3/2;
+  object-position: center top;
   background: var(--black);
   border-bottom: var(--border-acid);
   overflow: hidden;
@@ -347,8 +348,8 @@
 }
 .shop-tile-photo img {
   width: 100%; height: 100%;
-  object-fit: cover;
-
+  object-fit: contain;
+  object-position: center top;
   transform: scale(1);
   filter: contrast(1) saturate(0.95) brightness(0.95);
 
@@ -1232,16 +1233,26 @@ function computeImpact() {
 }
 
 /* ── SHOP TILE PHOTOS — load first image of each type ── */
+/* map bag type to local Display image */
+const typeDisplayPhoto = {
+  'mini tote':       '/Display/1.png',
+  'tote':            '/Display/2.png',
+  'tote w/ pockets': '/Display/3.png',
+  'shopper s':       '/Display/4.png',
+  'shopper l':       '/Display/5.png',
+  'backpack':        '/Display/6.png',
+};
+
 function loadTilePhotos() {
-  document.querySelectorAll('.shop-tile').forEach((tile, index) => {
-    const img = tile.querySelector('.shop-tile-photo img');
+  document.querySelectorAll('.shop-tile').forEach(tile => {
+    const type = tile.dataset.type;
+    const url  = typeDisplayPhoto[type];
+    if (!url) return;
     const placeholder = tile.querySelector('.shop-tile-photo-placeholder');
-
+    const img = tile.querySelector('.shop-tile-photo img');
     if (!img) return;
-
-    img.src = `display/${index + 1}.png`;
+    img.src = url;
     img.style.display = 'block';
-
     if (placeholder) placeholder.style.display = 'none';
   });
 }
